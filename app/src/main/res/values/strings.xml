@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Car Lane Racer</string>
+    <string name="btn_left"><![CDATA[<]]></string>
+    <string name="btn_right"><![CDATA[>]]></string>
+    <string name="crash_toast">BOOM! Obstacle Hit!</string>
+    <string name="game_over">Game Over!</string>
+</resources>

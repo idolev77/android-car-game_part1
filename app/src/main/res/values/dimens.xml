@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Objects Sizes -->
+    <dimen name="car_size">60dp</dimen>
+    <dimen name="obstacle_size">50dp</dimen>
+    <dimen name="heart_size">30dp</dimen>
+    <dimen name="button_size">70dp</dimen>
+
+    <!-- Margins & Spacing -->
+    <dimen name="screen_margin">16dp</dimen>
+    <dimen name="lane_margin">4dp</dimen>
+    <dimen name="button_bottom_margin">32dp</dimen>
+    <dimen name="car_bottom_margin">120dp</dimen> <!-- Car sits above buttons -->
+
+    <!-- Text -->
+    <dimen name="game_over_text">32sp</dimen>
+</resources>

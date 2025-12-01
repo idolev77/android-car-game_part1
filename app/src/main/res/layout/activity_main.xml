@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/road_background"
+    tools:context=".ui.MainActivity">
+
+    <!-- ===== LIVES (TOP RIGHT) ===== -->
+    <RelativeLayout
+        android:id="@+id/panel_hearts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/screen_margin">
+
+        <ImageView
+            android:id="@+id/heart3"
+            android:layout_width="@dimen/heart_size"
+            android:layout_height="@dimen/heart_size"
+            android:src="@drawable/heart"
+            android:layout_toRightOf="@id/heart2"/>
+
+        <ImageView
+            android:id="@+id/heart2"
+            android:layout_width="@dimen/heart_size"
+            android:layout_height="@dimen/heart_size"
+            android:src="@drawable/heart"
+            android:layout_toRightOf="@id/heart1"
+            android:layout_marginLeft="@dimen/lane_margin"/>
+
+        <ImageView
+            android:id="@+id/heart1"
+            android:layout_width="@dimen/heart_size"
+            android:layout_height="@dimen/heart_size"
+            android:src="@drawable/heart"/>
+    </RelativeLayout>
+
+    <!-- ===== OBSTACLES (Dynamic movement via TopMargin) ===== -->
+    <!-- We pre-define them in XML to keep RelativeLayout purity -->
+
+    <!-- Obstacle Lane Left -->
+    <ImageView
+        android:id="@+id/obstacle_left"
+        android:layout_width="@dimen/obstacle_size"
+        android:layout_height="@dimen/obstacle_size"
+        android:src="@drawable/block"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/screen_margin"
+        android:layout_marginTop="-100dp"/>
+
+    <!-- Obstacle Lane Center -->
+    <ImageView
+        android:id="@+id/obstacle_center"
+        android:layout_width="@dimen/obstacle_size"
+        android:layout_height="@dimen/obstacle_size"
+        android:src="@drawable/block"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-100dp"/>
+
+    <!-- Obstacle Lane Right -->
+    <ImageView
+        android:id="@+id/obstacle_right"
+        android:layout_width="@dimen/obstacle_size"
+        android:layout_height="@dimen/obstacle_size"
+        android:src="@drawable/block"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/screen_margin"
+        android:layout_marginTop="-100dp"/>
+
+
+    <!-- ===== CAR POSITIONS (Only one visible at a time) ===== -->
+
+    <!-- Lane 0: Left -->
+    <ImageView
+        android:id="@+id/car_left"
+        android:layout_width="@dimen/car_size"
+        android:layout_height="@dimen/car_size"
+        android:src="@drawable/car"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/car_bottom_margin"
+        android:layout_marginLeft="@dimen/screen_margin"
+        android:visibility="invisible"/>
+
+    <!-- Lane 1: Center -->
+    <ImageView
+        android:id="@+id/car_center"
+        android:layout_width="@dimen/car_size"
+        android:layout_height="@dimen/car_size"
+        android:src="@drawable/car"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/car_bottom_margin"
+        android:visibility="visible"/>
+
+    <!-- Lane 2: Right -->
+    <ImageView
+        android:id="@+id/car_right"
+        android:layout_width="@dimen/car_size"
+        android:layout_height="@dimen/car_size"
+        android:src="@drawable/car"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/car_bottom_margin"
+        android:layout_marginRight="@dimen/screen_margin"
+        android:visibility="invisible"/>
+
+    <!-- ===== CONTROLS (FLOATING OVERLAY) ===== -->
+
+    <ImageButton
+        android:id="@+id/btn_left"
+        android:layout_width="@dimen/button_size"
+        android:layout_height="@dimen/button_size"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="@dimen/button_bottom_margin"
+        android:layout_marginLeft="@dimen/screen_margin"
+        android:background="@drawable/button_background"
+        android:src="@android:drawable/ic_media_previous"
+        android:elevation="10dp"/>
+
+    <ImageButton
+        android:id="@+id/btn_right"
+        android:layout_width="@dimen/button_size"
+        android:layout_height="@dimen/button_size"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/button_bottom_margin"
+        android:layout_marginRight="@dimen/screen_margin"
+        android:background="@drawable/button_background"
+        android:src="@android:drawable/ic_media_next"
+        android:elevation="10dp"/>
+
+</RelativeLayout>
