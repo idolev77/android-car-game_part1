@@ -66,6 +66,4 @@ class GameManager(private val context: Context, private val lifeCount: Int = 3) 
             Toast.makeText(context, "Game Over!", Toast.LENGTH_LONG).show()
         }
     }
-
-    // TODO: Add scoring and difficulty levels in the future
 }

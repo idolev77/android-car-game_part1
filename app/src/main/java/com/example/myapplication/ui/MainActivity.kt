@@ -4,10 +4,13 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
 import com.example.myapplication.logic.GameManager
@@ -201,6 +204,7 @@ class MainActivity : AppCompatActivity() {
         if (Rect.intersects(carRect, obstacleRect)) {
             // Collision detected
             collisionDetected = true
+            onCrash() // Show toast and vibrate
             gameManager.checkCollision(activeObstacleLane)
 
             // Move obstacle away immediately to prevent double detection
@@ -208,6 +212,16 @@ class MainActivity : AppCompatActivity() {
             params.topMargin = mainLayout.height + 100
             obstacle.layoutParams = params
         }
+    }
+
+    // ===== Crash Handler =====
+    private fun onCrash() {
+        // Display Toast message
+        Toast.makeText(this, "Crash!", Toast.LENGTH_SHORT).show()
+
+        // Trigger vibration
+        val vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
+        vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE))
     }
 
     override fun onPause() {
