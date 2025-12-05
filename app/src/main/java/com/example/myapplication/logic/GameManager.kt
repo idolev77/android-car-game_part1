@@ -48,20 +48,16 @@ class GameManager(private val lifeCount: Int = 3) {
     }
 
     // ===== Lives & Collision =====
-    fun checkCollision(obstacleLane: Int) {
-        // If obstacle is in the same lane as the car
-        if (obstacleLane == currentCarIndex) {
-            handleCollision()
-        }
-    }
-
-    private fun handleCollision() {
+    fun handleCollision() {
+        android.util.Log.d("GameManager", "handleCollision() called - lives before: $lives")
         lives--
+        android.util.Log.d("GameManager", "Lives after decrement: $lives")
 
         // Toast is shown in MainActivity.onCrash() to avoid duplicate messages
 
         if (lives <= 0) {
             isGameRunning = false
+            android.util.Log.d("GameManager", "GAME OVER! isGameRunning set to false")
             // Game Over message removed - GameOverActivity will show instead
         }
     }

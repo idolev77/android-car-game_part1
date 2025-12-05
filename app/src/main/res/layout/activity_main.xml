@@ -1,177 +1,93 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutDirection="ltr"
     tools:context=".ui.MainActivity">
-
-    <!-- ===== ANIMATED GIF BACKGROUND ===== -->
     <ImageView
         android:id="@+id/background_gif"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:contentDescription="@string/background_description"/>
-
-    <!-- ===== SCORE (TOP LEFT) ===== -->
+    <TableLayout
+        android:id="@+id/game_grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:stretchColumns="*"
+        android:shrinkColumns="*"/>
     <TextView
         android:id="@+id/text_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="@dimen/screen_margin"
+        android:layout_gravity="top|left"
+        android:layout_margin="16dp"
         android:background="@drawable/hearts_background"
-        android:padding="12dp"
+        android:padding="10dp"
         android:text="@string/score_label"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
+        android:elevation="10dp"
         android:contentDescription="@string/score_description"/>
-
-    <!-- ===== LIVES (TOP RIGHT) ===== -->
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/panel_hearts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/screen_margin"
+        android:layout_gravity="top|right"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
         android:background="@drawable/hearts_background"
-        android:padding="8dp">
-
-        <ImageView
-            android:id="@+id/heart3"
-            android:layout_width="@dimen/heart_size"
-            android:layout_height="@dimen/heart_size"
-            android:src="@drawable/heart"
-            android:layout_toRightOf="@id/heart2"
-            android:contentDescription="@string/heart_description"/>
-
-        <ImageView
-            android:id="@+id/heart2"
-            android:layout_width="@dimen/heart_size"
-            android:layout_height="@dimen/heart_size"
-            android:src="@drawable/heart"
-            android:layout_toRightOf="@id/heart1"
-            android:layout_marginLeft="@dimen/lane_margin"
-            android:contentDescription="@string/heart_description"/>
-
+        android:padding="8dp"
+        android:elevation="10dp">
         <ImageView
             android:id="@+id/heart1"
-            android:layout_width="@dimen/heart_size"
-            android:layout_height="@dimen/heart_size"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/heart"
             android:contentDescription="@string/heart_description"/>
+        <ImageView
+            android:id="@+id/heart2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="4dp"
+            android:src="@drawable/heart"
+            android:contentDescription="@string/heart_description"/>
+        <ImageView
+            android:id="@+id/heart3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="4dp"
+            android:src="@drawable/heart"
+            android:contentDescription="@string/heart_description"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:padding="16dp">
+        <ImageButton
+            android:id="@+id/btn_left"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/button_background"
+            android:src="@android:drawable/ic_media_previous"
+            android:elevation="10dp"
+            android:contentDescription="@string/button_left_description"/>
+        <ImageButton
+            android:id="@+id/btn_right"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/button_background"
+            android:src="@android:drawable/ic_media_next"
+            android:elevation="10dp"
+            android:contentDescription="@string/button_right_description"/>
     </RelativeLayout>
-
-    <!-- ===== OBSTACLES (Dynamic movement via TopMargin) ===== -->
-    <!-- We pre-define them in XML to keep RelativeLayout purity -->
-
-    <!-- Obstacle Lane Left -->
-    <ImageView
-        android:id="@+id/obstacle_left"
-        android:layout_width="@dimen/obstacle_size"
-        android:layout_height="@dimen/obstacle_size"
-        android:src="@drawable/bear"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="@dimen/screen_margin"
-        android:layout_marginTop="-100dp"
-        android:contentDescription="@string/obstacle_description"/>
-
-    <!-- Obstacle Lane Center -->
-    <ImageView
-        android:id="@+id/obstacle_center"
-        android:layout_width="@dimen/obstacle_size"
-        android:layout_height="@dimen/obstacle_size"
-        android:src="@drawable/bear"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="-100dp"
-        android:contentDescription="@string/obstacle_description"/>
-
-    <!-- Obstacle Lane Right -->
-    <ImageView
-        android:id="@+id/obstacle_right"
-        android:layout_width="@dimen/obstacle_size"
-        android:layout_height="@dimen/obstacle_size"
-        android:src="@drawable/bear"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/screen_margin"
-        android:layout_marginTop="-100dp"
-        android:contentDescription="@string/obstacle_description"/>
-
-
-    <!-- ===== CAR POSITIONS (Only one visible at a time) ===== -->
-
-    <!-- Lane 0: Left -->
-    <ImageView
-        android:id="@+id/car_left"
-        android:layout_width="@dimen/car_size"
-        android:layout_height="@dimen/car_size"
-        android:src="@drawable/bitcoin"
-        android:scaleType="fitCenter"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/car_bottom_margin"
-        android:layout_marginLeft="@dimen/screen_margin"
-        android:visibility="invisible"
-        android:contentDescription="@string/car_description"/>
-
-    <!-- Lane 1: Center -->
-    <ImageView
-        android:id="@+id/car_center"
-        android:layout_width="@dimen/car_size"
-        android:layout_height="@dimen/car_size"
-        android:src="@drawable/bitcoin"
-        android:scaleType="fitCenter"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/car_bottom_margin"
-        android:visibility="visible"
-        android:contentDescription="@string/car_description"/>
-
-    <!-- Lane 2: Right -->
-    <ImageView
-        android:id="@+id/car_right"
-        android:layout_width="@dimen/car_size"
-        android:layout_height="@dimen/car_size"
-        android:src="@drawable/bitcoin"
-        android:scaleType="fitCenter"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/car_bottom_margin"
-        android:layout_marginRight="@dimen/screen_margin"
-        android:visibility="invisible"
-        android:contentDescription="@string/car_description"/>
-
-    <!-- ===== CONTROLS (FLOATING OVERLAY) ===== -->
-
-    <ImageButton
-        android:id="@+id/btn_left"
-        android:layout_width="@dimen/button_size"
-        android:layout_height="@dimen/button_size"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="@dimen/button_bottom_margin"
-        android:layout_marginLeft="@dimen/screen_margin"
-        android:background="@drawable/button_background"
-        android:src="@android:drawable/ic_media_previous"
-        android:elevation="10dp"
-        android:contentDescription="@string/button_left_description"/>
-
-    <ImageButton
-        android:id="@+id/btn_right"
-        android:layout_width="@dimen/button_size"
-        android:layout_height="@dimen/button_size"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/button_bottom_margin"
-        android:layout_marginRight="@dimen/screen_margin"
-        android:background="@drawable/button_background"
-        android:src="@android:drawable/ic_media_next"
-        android:elevation="10dp"
-        android:contentDescription="@string/button_right_description"/>
-
-</RelativeLayout>
+</FrameLayout>
