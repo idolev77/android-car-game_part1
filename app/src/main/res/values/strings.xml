@@ -4,6 +4,13 @@
     <string name="btn_right"><![CDATA[>]]></string>
     <string name="crash_toast">BOOM! Obstacle Hit!</string>
     <string name="game_over">Game Over!</string>
+    <string name="game_over_title">GAME OVER</string>
+    <string name="final_score_label">Your Score: %d</string>
+    <string name="play_again_button">PLAY AGAIN</string>
+    <string name="score_label">Score: %d</string>
+    <string name="game_over_title_description">Game Over Title</string>
+    <string name="final_score_description">Final Score</string>
+    <string name="play_again_description">Play Again Button</string>
 
     <!-- Content Descriptions for Accessibility -->
     <string name="background_description">Animated road background</string>
@@ -12,4 +19,5 @@
     <string name="car_description">Player car</string>
     <string name="button_left_description">Move car left</string>
     <string name="button_right_description">Move car right</string>
+    <string name="score_description">Current game score</string>
 </resources>

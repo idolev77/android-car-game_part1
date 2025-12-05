@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1A1A1A"
+    android:layoutDirection="ltr"
+    android:padding="32dp">
+
+    <!-- Game Over Title -->
+    <TextView
+        android:id="@+id/text_game_over"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:text="@string/game_over_title"
+        android:textColor="#FF6B6B"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        android:contentDescription="@string/game_over_title_description"/>
+
+    <!-- Final Score -->
+    <TextView
+        android:id="@+id/text_final_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_game_over"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="@string/final_score_label"
+        android:textColor="#FFFFFF"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:contentDescription="@string/final_score_description"/>
+
+    <!-- Play Again Button -->
+    <Button
+        android:id="@+id/btn_play_again"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_final_score"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:backgroundTint="#F7931A"
+        android:paddingLeft="40dp"
+        android:paddingTop="16dp"
+        android:paddingRight="40dp"
+        android:paddingBottom="16dp"
+        android:text="@string/play_again_button"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:contentDescription="@string/play_again_description"/>
+
+</RelativeLayout>
+

@@ -1,8 +1,8 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="100dp"
     android:height="100dp"
-    android:viewportWidth="4091.27"
-    android:viewportHeight="4091.73">
+    android:viewportWidth="4092"
+    android:viewportHeight="4092">
 
     <!-- Bitcoin Circle Background -->
     <path

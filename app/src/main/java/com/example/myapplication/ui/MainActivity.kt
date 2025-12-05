@@ -1,6 +1,6 @@
 package com.example.myapplication.ui
 
-import android.content.Context
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainLayout: RelativeLayout
     private lateinit var btnLeft: ImageButton
     private lateinit var btnRight: ImageButton
+    private lateinit var textScore: TextView
 
     // View arrays to control lanes easily
     private lateinit var carViews: Array<ImageView>
@@ -38,12 +40,15 @@ class MainActivity : AppCompatActivity() {
 
     // Obstacle data
     private var activeObstacleLane = 1 // Which obstacle is currently falling
-    private var obstacleSpeed = 20
+    private var obstacleSpeed = 10 // Reduced speed to make obstacles fall slower
     private var collisionDetected = false // Prevent double collision
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Force LTR layout direction to prevent RTL mirroring on Hebrew devices
+        window.decorView.layoutDirection = View.LAYOUT_DIRECTION_LTR
 
         initViews()
         initGame()
@@ -54,6 +59,7 @@ class MainActivity : AppCompatActivity() {
         mainLayout = findViewById(R.id.main_layout)
         btnLeft = findViewById(R.id.btn_left)
         btnRight = findViewById(R.id.btn_right)
+        textScore = findViewById(R.id.text_score)
 
         // Load animated GIF background with Glide
         val backgroundGif = findViewById<ImageView>(R.id.background_gif)
@@ -87,7 +93,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initGame() {
-        gameManager = GameManager(this)
+        gameManager = GameManager()
 
         btnLeft.setOnClickListener {
             gameManager.moveCarLeft()
@@ -101,6 +107,7 @@ class MainActivity : AppCompatActivity() {
 
         updateCarUI() // Show initial car position
         updateLivesUI() // Show initial lives
+        updateScoreUI() // Show initial score
         startTimer()
     }
 
@@ -124,12 +131,14 @@ class MainActivity : AppCompatActivity() {
     private fun tick() {
         if (!gameManager.isGameRunning) {
             stopTimer()
+            openGameOverActivity()
             return
         }
 
         moveObstacle()
         checkCollision()
         updateLivesUI()
+        updateScoreUI()
     }
 
     private fun moveObstacle() {
@@ -151,6 +160,11 @@ class MainActivity : AppCompatActivity() {
 
         // If obstacle goes off screen
         if (params.topMargin > mainLayout.height) {
+            // Only add score if player dodged successfully (no collision)
+            if (!collisionDetected) {
+                gameManager.incrementScore() // +10 points for successful dodge!
+            }
+
             params.topMargin = -200
             obstacle.visibility = View.INVISIBLE
             // Pick a new random lane
@@ -178,6 +192,18 @@ class MainActivity : AppCompatActivity() {
         for (i in heartViews.indices) {
             heartViews[i].visibility = if (i < gameManager.lives) View.VISIBLE else View.INVISIBLE
         }
+    }
+
+    private fun updateScoreUI() {
+        textScore.text = getString(R.string.score_label, gameManager.score)
+    }
+
+    // ===== Game Over =====
+    private fun openGameOverActivity() {
+        val intent = Intent(this, GameOverActivity::class.java)
+        intent.putExtra("FINAL_SCORE", gameManager.score)
+        startActivity(intent)
+        finish()
     }
 
     // ===== Collision Detection =====
@@ -212,10 +238,10 @@ class MainActivity : AppCompatActivity() {
         )
 
         if (Rect.intersects(carRect, obstacleRect)) {
-            // Collision detected
+            // Collision detected - ONLY reduces hearts, NO scoring
             collisionDetected = true
             onCrash() // Show toast and vibrate
-            gameManager.checkCollision(activeObstacleLane)
+            gameManager.checkCollision(activeObstacleLane) // Reduces hearts only
 
             // Move obstacle away immediately to prevent double detection
             val params = obstacle.layoutParams as RelativeLayout.LayoutParams

@@ -11,7 +11,7 @@
     <!-- Game Colors -->
     <color name="road_background">#FFFFFF</color>
     <color name="lane_divider">#FFFFFF</color>
-    <color name="button_color">#FFFFFF</color>
+    <color name="button_color">#000000</color>
     <color name="button_pressed">#C2185B</color>
     <color name="text_color">#FFFFFF</color>
 </resources>

@@ -1,12 +1,9 @@
 package com.example.myapplication.logic
 
-import android.content.Context
-import android.widget.Toast
-
 /**
  * Manages game logic: lives, collisions, and car state
  */
-class GameManager(private val context: Context, private val lifeCount: Int = 3) {
+class GameManager(private val lifeCount: Int = 3) {
 
     var score: Int = 0
         private set
@@ -45,6 +42,11 @@ class GameManager(private val context: Context, private val lifeCount: Int = 3) 
         }
     }
 
+    // ===== Score Management =====
+    fun incrementScore() {
+        score += 10
+    }
+
     // ===== Lives & Collision =====
     fun checkCollision(obstacleLane: Int) {
         // If obstacle is in the same lane as the car
@@ -56,14 +58,11 @@ class GameManager(private val context: Context, private val lifeCount: Int = 3) 
     private fun handleCollision() {
         lives--
 
-        // No vibration here anymore
-
-        // User feedback
-        Toast.makeText(context, "BOOM! Collision!", Toast.LENGTH_SHORT).show()
+        // Toast is shown in MainActivity.onCrash() to avoid duplicate messages
 
         if (lives <= 0) {
             isGameRunning = false
-            Toast.makeText(context, "Game Over!", Toast.LENGTH_LONG).show()
+            // Game Over message removed - GameOverActivity will show instead
         }
     }
 }

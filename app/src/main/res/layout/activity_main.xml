@@ -4,6 +4,7 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layoutDirection="ltr"
     tools:context=".ui.MainActivity">
 
     <!-- ===== ANIMATED GIF BACKGROUND ===== -->
@@ -14,21 +15,39 @@
         android:scaleType="centerCrop"
         android:contentDescription="@string/background_description"/>
 
+    <!-- ===== SCORE (TOP LEFT) ===== -->
+    <TextView
+        android:id="@+id/text_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="@dimen/screen_margin"
+        android:background="@drawable/hearts_background"
+        android:padding="12dp"
+        android:text="@string/score_label"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:contentDescription="@string/score_description"/>
+
     <!-- ===== LIVES (TOP RIGHT) ===== -->
     <RelativeLayout
         android:id="@+id/panel_hearts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/screen_margin">
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/screen_margin"
+        android:background="@drawable/hearts_background"
+        android:padding="8dp">
 
         <ImageView
             android:id="@+id/heart3"
             android:layout_width="@dimen/heart_size"
             android:layout_height="@dimen/heart_size"
             android:src="@drawable/heart"
-            android:layout_toEndOf="@id/heart2"
+            android:layout_toRightOf="@id/heart2"
             android:contentDescription="@string/heart_description"/>
 
         <ImageView
@@ -36,8 +55,8 @@
             android:layout_width="@dimen/heart_size"
             android:layout_height="@dimen/heart_size"
             android:src="@drawable/heart"
-            android:layout_toEndOf="@id/heart1"
-            android:layout_marginStart="@dimen/lane_margin"
+            android:layout_toRightOf="@id/heart1"
+            android:layout_marginLeft="@dimen/lane_margin"
             android:contentDescription="@string/heart_description"/>
 
         <ImageView
@@ -57,8 +76,8 @@
         android:layout_width="@dimen/obstacle_size"
         android:layout_height="@dimen/obstacle_size"
         android:src="@drawable/bear"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="@dimen/screen_margin"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/screen_margin"
         android:layout_marginTop="-100dp"
         android:contentDescription="@string/obstacle_description"/>
 
@@ -78,8 +97,8 @@
         android:layout_width="@dimen/obstacle_size"
         android:layout_height="@dimen/obstacle_size"
         android:src="@drawable/bear"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="@dimen/screen_margin"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/screen_margin"
         android:layout_marginTop="-100dp"
         android:contentDescription="@string/obstacle_description"/>
 
@@ -92,10 +111,11 @@
         android:layout_width="@dimen/car_size"
         android:layout_height="@dimen/car_size"
         android:src="@drawable/bitcoin"
-        android:layout_alignParentStart="true"
+        android:scaleType="fitCenter"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/car_bottom_margin"
-        android:layout_marginStart="@dimen/screen_margin"
+        android:layout_marginLeft="@dimen/screen_margin"
         android:visibility="invisible"
         android:contentDescription="@string/car_description"/>
 
@@ -105,6 +125,7 @@
         android:layout_width="@dimen/car_size"
         android:layout_height="@dimen/car_size"
         android:src="@drawable/bitcoin"
+        android:scaleType="fitCenter"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/car_bottom_margin"
@@ -117,10 +138,11 @@
         android:layout_width="@dimen/car_size"
         android:layout_height="@dimen/car_size"
         android:src="@drawable/bitcoin"
-        android:layout_alignParentEnd="true"
+        android:scaleType="fitCenter"
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/car_bottom_margin"
-        android:layout_marginEnd="@dimen/screen_margin"
+        android:layout_marginRight="@dimen/screen_margin"
         android:visibility="invisible"
         android:contentDescription="@string/car_description"/>
 
@@ -131,9 +153,9 @@
         android:layout_width="@dimen/button_size"
         android:layout_height="@dimen/button_size"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_margin="@dimen/button_bottom_margin"
-        android:layout_marginStart="@dimen/screen_margin"
+        android:layout_marginLeft="@dimen/screen_margin"
         android:background="@drawable/button_background"
         android:src="@android:drawable/ic_media_previous"
         android:elevation="10dp"
@@ -144,9 +166,9 @@
         android:layout_width="@dimen/button_size"
         android:layout_height="@dimen/button_size"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_margin="@dimen/button_bottom_margin"
-        android:layout_marginEnd="@dimen/screen_margin"
+        android:layout_marginRight="@dimen/screen_margin"
         android:background="@drawable/button_background"
         android:src="@android:drawable/ic_media_next"
         android:elevation="10dp"
