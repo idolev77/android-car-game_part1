@@ -27,6 +27,14 @@
             </PendingDiffInfo>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/drawable/cell_background.xml">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/app/src/main/res/drawable/cell_background.xml" />
+              <option name="updatedContent" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&#10;&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&#10;    android:shape=&quot;rectangle&quot;&gt;&#10;    &#10;    &lt;!-- Semi-transparent white background --&gt;&#10;    &lt;solid android:color=&quot;#66FFFFFF&quot; /&gt;&#10;    &#10;    &lt;!-- Rounded corners --&gt;&#10;    &lt;corners android:radius=&quot;8dp&quot; /&gt;&#10;    &#10;    &lt;!-- Border for more emphasis --&gt;&#10;    &lt;stroke&#10;        android:width=&quot;2dp&quot;&#10;        android:color=&quot;#99FFFFFF&quot; /&gt;&#10;    &#10;    &lt;!-- Padding inside --&gt;&#10;    &lt;padding&#10;        android:left=&quot;4dp&quot;&#10;        android:top=&quot;4dp&quot;&#10;        android:right=&quot;4dp&quot;&#10;        android:bottom=&quot;4dp&quot; /&gt;&#10;&lt;/shape&gt;&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/drawable/ic_launcher_background.xml">
           <value>
             <PendingDiffInfo>

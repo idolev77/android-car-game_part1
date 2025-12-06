@@ -45,10 +45,10 @@ class MainActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())  // Game timer
     private val frameRate: Long = 600 // Time between moves (600ms = 0.6 seconds)
 
-    // Obstacle tracking
-    private var obstacleRow = -1        // Current obstacle row
-    private var obstacleCol = 1         // Current obstacle column
-    private var collisionDetected = false  // Whether collision was detected
+    // Obstacle tracking - multiple obstacles
+    private data class Obstacle(var row: Int, var col: Int, var collisionDetected: Boolean = false)
+    private val obstacles = mutableListOf<Obstacle>()  // List of active obstacles
+    private var spawnCounter = 0  // Counter to control spawn frequency
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,7 +142,11 @@ class MainActivity : AppCompatActivity() {
         updatePlayerPosition()  // Place player in starting position
         updateLivesUI()         // Update hearts display
         updateScoreUI()         // Update score display
-        spawnNewObstacle()      // Create first obstacle
+
+        // Spawn initial obstacles
+        spawnNewObstacle()
+        spawnCounter = 0
+
         startTimer()            // Start game loop
     }
 
@@ -169,89 +173,103 @@ class MainActivity : AppCompatActivity() {
 
     // Game loop - executed every 600ms
     private fun tick() {
-        android.util.Log.d("MainActivity", "tick() - isGameRunning=${gameManager.isGameRunning}, lives=${gameManager.lives}")
+        android.util.Log.d("MainActivity", "tick() - isGameRunning=${gameManager.lives}")
 
         // Endless game - no need to check isGameRunning, game always continues
-        moveObstacle()
+
+        // Spawn new obstacles periodically (every 4-6 ticks = 2.4-3.6 seconds)
+        spawnCounter++
+        if (spawnCounter >= (4..6).random()) {
+            spawnNewObstacle()
+            spawnCounter = 0
+        }
+
+        // Move all obstacles
+        moveAllObstacles()
+
         updateScoreUI()
         updateLivesUI()
     }
 
     // Create new obstacle - starts at top row in random column
     private fun spawnNewObstacle() {
-        obstacleRow = 0  // Top row
-        obstacleCol = (0 until GRID_COLS).random()  // Random column (0-2)
-        collisionDetected = false  // Reset collision flag
+        val newObstacle = Obstacle(row = 0, col = (0 until GRID_COLS).random())
+        obstacles.add(newObstacle)
 
         // Place obstacle (bear) in grid
-        gridCells[obstacleRow][obstacleCol]?.setImageResource(R.drawable.bear)
+        gridCells[newObstacle.row][newObstacle.col]?.setImageResource(R.drawable.bear_market)
     }
 
-    // Move obstacle one row down
-    private fun moveObstacle() {
-        if (obstacleRow < 0) return
+    // Move all obstacles one row down
+    private fun moveAllObstacles() {
+        val obstaclesToRemove = mutableListOf<Obstacle>()
 
-        // Clear current position - but NEVER clear the player row
-        if (obstacleRow < GRID_ROWS && obstacleRow != PLAYER_ROW) {
-            gridCells[obstacleRow][obstacleCol]?.setImageDrawable(null)
-        }
+        for (obstacle in obstacles) {
+            // Clear current position - but NEVER clear the player row
+            if (obstacle.row < GRID_ROWS && obstacle.row != PLAYER_ROW) {
+                gridCells[obstacle.row][obstacle.col]?.setImageDrawable(null)
+            }
 
-        // Move down one row
-        obstacleRow++
+            // Move down one row
+            obstacle.row++
 
-        // Check if obstacle reached bottom (past the grid)
-        if (obstacleRow >= GRID_ROWS) {
-            // Clear the last position before spawning new obstacle
-            // Check the actual last row where the bear was
-            val lastRow = GRID_ROWS - 1
-            if (lastRow != PLAYER_ROW) {
-                // Clear if it's not player row
-                gridCells[lastRow][obstacleCol]?.setImageDrawable(null)
-            } else {
-                // If last row IS player row, check if bear is in different column than player
-                if (obstacleCol != gameManager.currentCarIndex) {
-                    gridCells[lastRow][obstacleCol]?.setImageDrawable(null)
+            // Check if obstacle reached bottom (past the grid)
+            if (obstacle.row >= GRID_ROWS) {
+                // Clear the last position
+                val lastRow = GRID_ROWS - 1
+                if (lastRow != PLAYER_ROW) {
+                    gridCells[lastRow][obstacle.col]?.setImageDrawable(null)
+                } else {
+                    if (obstacle.col != gameManager.currentCarIndex) {
+                        gridCells[lastRow][obstacle.col]?.setImageDrawable(null)
+                    }
                 }
+
+                // Obstacle passed successfully - add score
+                if (!obstacle.collisionDetected) {
+                    gameManager.incrementScore()
+                }
+
+                // Mark for removal
+                obstaclesToRemove.add(obstacle)
+                continue
             }
 
-            // Obstacle passed successfully - add score
-            if (!collisionDetected) {
-                gameManager.incrementScore()
+            // Check collision at new position
+            if (obstacle.row == PLAYER_ROW && obstacle.col == gameManager.currentCarIndex && !obstacle.collisionDetected) {
+                // Collision! Bear hit the bitcoin
+                android.util.Log.d("MainActivity", "COLLISION DETECTED! Lives before: ${gameManager.lives}")
+                obstacle.collisionDetected = true
+                onCrash() // Show Toast and vibrate
+
+                // Reduce lives (if lives run out, GameManager will reset automatically)
+                gameManager.handleCollision()
+                android.util.Log.d("MainActivity", "Lives after collision: ${gameManager.lives}")
+
+                // Game continues - don't stop it (endless game)
+                updateScoreUI()
+                updateLivesUI()
+
+                // Mark for removal
+                obstaclesToRemove.add(obstacle)
+                continue
             }
-            spawnNewObstacle()  // Create new obstacle
-            return
+
+            // Place obstacle in new position
+            gridCells[obstacle.row][obstacle.col]?.setImageResource(R.drawable.bear_market)
         }
 
-        // Check collision at new position
-        if (obstacleRow == PLAYER_ROW && obstacleCol == gameManager.currentCarIndex) {
-            // Collision! Bear hit the bitcoin
-            android.util.Log.d("MainActivity", "COLLISION DETECTED! Lives before: ${gameManager.lives}")
-            collisionDetected = true
-            onCrash() // Show Toast and vibrate
-
-            // Reduce lives (if lives run out, GameManager will reset automatically)
-            gameManager.handleCollision()
-            android.util.Log.d("MainActivity", "Lives after collision: ${gameManager.lives}")
-
-            // Game continues - don't stop it (endless game)
-            updateScoreUI()
-            updateLivesUI()
-
-            // Create new obstacle at top
-            spawnNewObstacle()
-            return
-        }
-
-        // Place obstacle in new position
-        gridCells[obstacleRow][obstacleCol]?.setImageResource(R.drawable.bear)
+        // Remove obstacles that reached bottom or collided
+        obstacles.removeAll(obstaclesToRemove)
     }
 
     // Update player position in grid
     private fun updatePlayerPosition() {
         // Clear ONLY old bitcoin positions, don't clear bear if it's at player row
         for (col in 0 until GRID_COLS) {
-            // Only clear if this column doesn't have the bear at player row
-            if (obstacleRow != PLAYER_ROW || col != obstacleCol) {
+            // Check if any obstacle is at player row in this column
+            val hasObstacle = obstacles.any { it.row == PLAYER_ROW && it.col == col }
+            if (!hasObstacle) {
                 gridCells[PLAYER_ROW][col]?.setImageDrawable(null)
             }
         }
@@ -263,24 +281,31 @@ class MainActivity : AppCompatActivity() {
 
     // Check collision when player moves sideways into obstacle
     private fun checkSideCollision() {
-        // Check if player moved into same position as obstacle
-        if (obstacleRow == PLAYER_ROW && obstacleCol == gameManager.currentCarIndex && !collisionDetected) {
-            // Side collision! Player moved into the bear
-            android.util.Log.d("MainActivity", "SIDE COLLISION! Player moved into bear. Lives before: ${gameManager.lives}")
-            collisionDetected = true
-            onCrash() // Show Toast and vibrate
+        val obstaclesToRemove = mutableListOf<Obstacle>()
 
-            // Reduce lives (if lives run out, GameManager will reset automatically)
-            gameManager.handleCollision()
-            android.util.Log.d("MainActivity", "Lives after side collision: ${gameManager.lives}")
+        // Check if player moved into same position as any obstacle
+        for (obstacle in obstacles) {
+            if (obstacle.row == PLAYER_ROW && obstacle.col == gameManager.currentCarIndex && !obstacle.collisionDetected) {
+                // Side collision! Player moved into the bear
+                android.util.Log.d("MainActivity", "SIDE COLLISION! Player moved into bear. Lives before: ${gameManager.lives}")
+                obstacle.collisionDetected = true
+                onCrash() // Show Toast and vibrate
 
-            // Game continues - don't stop it (endless game)
-            updateScoreUI()
-            updateLivesUI()
+                // Reduce lives (if lives run out, GameManager will reset automatically)
+                gameManager.handleCollision()
+                android.util.Log.d("MainActivity", "Lives after side collision: ${gameManager.lives}")
 
-            // Create new obstacle at top
-            spawnNewObstacle()
+                // Game continues - don't stop it (endless game)
+                updateScoreUI()
+                updateLivesUI()
+
+                // Mark for removal
+                obstaclesToRemove.add(obstacle)
+            }
         }
+
+        // Remove collided obstacles
+        obstacles.removeAll(obstaclesToRemove)
     }
 
     // Update hearts display (lives)
